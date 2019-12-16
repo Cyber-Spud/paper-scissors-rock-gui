@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="header"></div>
+    <div id="container">
+        <div id="sideLeft" class="side">
+        </div>
+            <div id="game">
+                <div id="gameContainer">
+                    <h1>Paper Scissors Rock</h1>
+                    <div class="gameIcon" id="paper"></div>
+                    <div class="gameIcon" id="scissors"></div>
+                    <div class="gameIcon" id="rock"></div>
+                </div>
+                <div id="results">
+                    <div id="rleft">
+                         
+                        <div>
+                            <div id="scoreconthuman">
+                                <p>You:</p>                        
+                                <p id="humanScore">0</p>
+                            </div>
+                        </div>
+                        <div id="humaniconcont">
+                            <img id="humanicon" src="default.png"></img>
+                        </div>
+                       
+                    </div>
+                    <div id="rmiddle"> 
+                        <div>    
+                            <img src="3points.png" id="result"></img>
+                        </div>
+                        <div id="cpucompcont">
+                            <progress id="progress" max="100" value="0"></progress>
+                        </div>
+                    </div>
+                    <div id="rright">
+                     
+                        <div>
+                            <div id="scorecontcpu">
+                                <p>CPU:</p>    
+                                <p id="cpuScore">0</p>
+                            </div>
+                        </div>
+                        <div id="cpuiconcont">
+                                <img id="cpuicon" src="default.png"></img>
+                        </div>
+                     
+                    </div>
+                </div>
+            </div>
+            <div id="sideRight" class="side"></div>
+        </div>    
+    </div>
+    <div id="footer">
+        <p>Designed by Reece Trevenen (Cyber-Spud) - More at <a href="https://github.com/Cyber-Spud">GitHub</a></p> 
+    </div>
+
+    <script>
+
+    let humanSelect = " ";
+    let cpu;
+    let loadSpeed = 1;
+    let totalDotMs = loadSpeed*100;
+    let click = 1;
+    let turn = 1;
+    let humanScore = 0;
+    let cpuScore = 0;
+    let gameScore = 0;
+
+    
+    
+    
+        document.getElementById("paper").addEventListener("click", function() {
+            if (click == 1) {
+                document.getElementById("humanScore").style["animation-name"] = ("");
+                document.getElementById("cpuScore").style["animation-name"] = ("");
+                click = 0;
+                humanSelect = "paper";
+                compute();
+            }
+        });
+        document.getElementById("scissors").addEventListener("click", function() {
+            if (click == 1) {
+                document.getElementById("humanScore").style["animation-name"] = ("");
+                document.getElementById("cpuScore").style["animation-name"] = ("");    
+                click = 0;
+                humanSelect = "scissors";
+                compute();
+            }
+            if (click == 2) {
+                newGame()
+                }
+        });
+        document.getElementById("rock").addEventListener("click", function() {
+            if (click == 1) {
+                document.getElementById("humanScore").style["animation-name"] = (""); 
+                document.getElementById("cpuScore").style["animation-name"] = ("");       
+                click = 0;
+                humanSelect = "rock";
+                compute();
+            }
+        });
+    
+    function newGame() {
+        document.getElementById("humanScore").style["animation-name"] = ("rotates");
+        document.getElementById("cpuScore").style["animation-name"] = ("rotates");
+        humanScore = 0;
+        cpuScore = 0;
+        document.getElementById("paper").style["background-image"] = ("url('papericon.png')");
+        document.getElementById("scissors").style["background-image"] = ("url('scissorsicon.png')"); 
+        document.getElementById("rock").style["background-image"] = ("url('rockicon.png')");
+        document.getElementById("cpuicon").src = "default.png";
+        document.getElementById("humanicon").src = "default.png";     
+        document.getElementById("paper").className = ("gameIcon"); 
+        document.getElementById("rock").className = ("gameIcon");
+        document.getElementById("humanScore").innerHTML = (humanScore);
+        document.getElementById("cpuScore").innerHTML = (cpuScore);
+        document.getElementById("result").src = "computeroff.png";
+        click = 1;  
+
+    }
+
+    function compute () { 
+        let humanSelectUpper = humanSelect.charAt(0).toUpperCase() + humanSelect.substring(1);
+        
+        document.getElementById("scoreconthuman").style["animation-name"] = ("");
+        document.getElementById("scorecontcpu").style["animation-name"] = ("");  
+        document.getElementById("humanicon").style. visibility = "visible";
+        document.getElementById("cpuicon").style.visibility = "hidden";
+        document.getElementById("humanicon").src = ""+humanSelect+".png";
+        document.getElementById("cpuicon").src = "default.png";
+        document.getElementById("result").src = "computer.png";
+        document.getElementById(humanSelect).style["background-color"] = ("darkgreen");
+        //document.getElementById("humanScore").style["animation-name"] = (""); 
+        //document.getElementById("cpuScore").style["animation-name"] = ("");
+         
+        //document.getElementById("output").innerHTML = "You: " + humanSelectUpper;
+        //setTimeout(function(){
+        //    document.getElementById("cpuComp").innerHTML = "CPU COMPUTING";
+       // }, 0);
+        addDots();
+        setTimeout(cpuSelect, totalDotMs);
+        setTimeout(result, totalDotMs);
+        setTimeout(game, 100 + totalDotMs);
+        
+    }
+
+
+    function addDots() {
+                    for (let i = 0; i < 101; i++) {
+                        setTimeout(function(){
+                            document.getElementById("progress").value = i*1;
+                        }, loadSpeed*i)
+                    }
+        }
+
+        function cpuSelect() { 
+        switch(getRandomInt()) {
+            case 0:
+                //document.getElementById("cpuAns").innerHTML = "CPU: Paper";
+                document.getElementById("cpuicon").src = "papercpu.png";
+                cpu = 0;
+                break;
+            case 1:
+                //document.getElementById("cpuAns").innerHTML = "CPU: Scissors";
+                document.getElementById("cpuicon").src = "scissorscpu.png";
+                cpu = 1;
+                break;
+            case 2:
+                //document.getElementById("cpuAns").innerHTML = "CPU: Rock";
+                document.getElementById("cpuicon").src = "rockcpu.png";
+                cpu = 2;
+                break;
+            default:
+                alert("Error");
+            }
+        }
+        
+        function getRandomInt() {
+        let integer = 3;
+            return Math.floor(Math.random() * Math.floor(integer));
+        }    
+        
+        function result() {
+        let human = humanSelect;
+        switch(true) {
+        case human == "paper" && cpu == 0:
+            //document.getElementById("result").innerHTML = ("It's a draw");
+            document.getElementById("result").src = "computerdraw.png";
+            document.getElementById("cpuScore").style["animation-name"] = ("shuffle");    
+            document.getElementById("humanScore").style["animation-name"] = ("shuffle");
+            break;
+        case human == "paper" && cpu == 1:
+            //document.getElementById("result").innerHTML = ("You lose");
+            document.getElementById("result").src = "computerlose.png";  
+            document.getElementById("cpuScore").style["animation-name"] = ("rotates");
+            document.getElementById("scorecontcpu").style["animation-name"] = ("cpuwin");          
+            cpuScore = (cpuScore + 1);
+            break;
+        case human == "paper" && cpu == 2:
+            //document.getElementById("cpuComp").innerHTML = ("You win");
+            document.getElementById("result").src = "computerwin.png";
+            document.getElementById("humanScore").style["animation-name"] = ("rotates");
+            document.getElementById("scoreconthuman").style["animation-name"] = ("humanwin"); 
+            humanScore = (humanScore + 1);
+            break;
+        case human == "scissors" && cpu == 0:
+            //document.getElementById("result").innerHTML = ("You win");
+            document.getElementById("result").src = "computerwin.png";
+            document.getElementById("humanScore").style["animation-name"] = ("rotates");
+            document.getElementById("scoreconthuman").style["animation-name"] = ("humanwin"); 
+            humanScore = (humanScore + 1);
+            break;
+        case human == "scissors" && cpu == 1:
+            //document.getElementById("result").innerHTML = ("It's a draw");
+            document.getElementById("result").src = "computerdraw.png";
+            document.getElementById("cpuScore").style["animation-name"] = ("shuffle");    
+            document.getElementById("humanScore").style["animation-name"] = ("shuffle"); 
+            break;
+        case human == "scissors" && cpu == 2:
+            //document.getElementById("result").innerHTML = ("You lose");
+            document.getElementById("result").src = "computerlose.png";
+            document.getElementById("cpuScore").style["animation-name"] = ("rotates");
+            document.getElementById("scorecontcpu").style["animation-name"] = ("cpuwin");   
+            cpuScore = (cpuScore + 1);
+            break;
+        case human == "rock" && cpu == 0:
+            //document.getElementById("result").innerHTML = ("You lose");
+            document.getElementById("result").src = "computerlose.png";
+            document.getElementById("cpuScore").style["animation-name"] = ("rotates");
+            document.getElementById("scorecontcpu").style["animation-name"] = ("cpuwin");   
+            cpuScore = (cpuScore + 1);
+            break;
+        case human == "rock" && cpu == 1:
+            //document.getElementById("result").innerHTML = ("You win");
+            document.getElementById("result").src = "computerwin.png";
+            document.getElementById("humanScore").style["animation-name"] = ("rotates");
+            document.getElementById("scoreconthuman").style["animation-name"] = ("humanwin"); 
+            humanScore = (humanScore + 1);
+            break;
+        case human == "rock" && cpu == 2:
+            //document.getElementById("result").innerHTML = ("It's a draw");
+            document.getElementById("result").src = "computerdraw.png";
+            document.getElementById("cpuScore").style["animation-name"] = ("shuffle");    
+            document.getElementById("humanScore").style["animation-name"] = ("shuffle"); 
+            break;
+        case human == "exit":
+            game = "off";
+            break;
+        default:
+            alert("Oops, something's broken");
+            game = "off";
+            break;
+        }
+    }
+
+    function game() {
+            document.getElementById("cpuicon").style.visibility = "visible";
+            document.getElementById("humanScore").innerHTML = (humanScore);
+            document.getElementById("cpuScore").innerHTML = (cpuScore);  
+            document.getElementById(humanSelect).style["background-color"] = ("");
+            document.getElementById("progress").value = 0;     
+        if (humanScore >= 3 || cpuScore >= 3) {     
+            if (humanScore >= 3) {
+                document.getElementById("result").src = "computersad.png";
+                document.getElementById("humanicon").src = "medalhuman.png";
+                document.getElementById("cpuicon").style.visibility = "hidden";
+            }
+            if (cpuScore >= 3) {
+                document.getElementById("result").src = "computerhappy.png";
+                document.getElementById("cpuicon").src = "medalcpu.png";
+                document.getElementById("humanicon").style.visibility = "hidden";
+            }
+        document.getElementById("paper").style["background-image"] = ("url('default.png')");
+        document.getElementById("scissors").style["background-image"] = ("url('playagain.png')"); 
+        document.getElementById("rock").style["background-image"] = ("url('default.png')");     
+        document.getElementById("paper").className = ("nohover"); 
+        document.getElementById("rock").className = ("nohover");
+        document.getElementById("humanScore").style["animation-name"] = (""); 
+        document.getElementById("cpuScore").style["animation-name"] = (""); 
+        click = 2;
+        }
+        else {
+            setTimeout(function(){click = 1}, totalDotMs)
+        }
+    }   
+
+
+
+    
+
+        </script>
+</body>
+</html>
+
+    
+    
+<!--
+
+    function game() {
+        switch(true) {
+            case humanScore > cpuScore:
+                alert("Human Score:" + humanScore + "\nCpu Score:" + cpuScore + "\nHumans Win");
+                break;
+            case humanScore < cpuScore:
+                alert("Human Score:" + humanScore + "\nCpu Score:" + cpuScore+  "\nCPU Win");
+                break;
+            case humanScore == cpuScore:
+                alert("Human Score:" + humanScore + "\nCpu Score:" + cpuScore + "\nIt's a draw");
+                break;
+        }
+    }   
+  
+
+ 
+
+    function getRandomInt() {
+        let integer = 3;
+            return Math.floor(Math.random() * Math.floor(integer));
+        }
+
+   function humanSelect() {
+        let option = "invalid";
+        while (option == "invalid") {
+            let select = prompt("Paper, Scissors or Rock? \nGame " + turn + " of 5 \n(Type 'Exit' to cancel)");
+            select = select.toLowerCase();
+            if (select == "paper" || select == "scissors" || select == "rock"|| select == "rock?") {
+                option = "valid";
+                return(select);
+            }
+            if (select == "exit") {
+                option = "valid"
+                return(select);
+            }
+            else {
+               alert("Invalid option, try again");
+            }
+        }
+    }
+
+    function cpuSelect() {    
+        switch(getRandomInt()) {
+            case 0:
+                alert("CPU selects paper");
+                break;
+            case 1:
+                alert("CPU selects scissors");
+                break;
+            case 2:
+                alert("CPU selects rock");
+                break;
+            default:
+                alert("Error");
+            }
+    }
+
+    for (let dot = 1; dot < totalDots + 1; dot++){    
+            setTimeout(function(){
+                let t = document.getElementById("cpuComp").innerHTML;
+                t = t + ".";
+                document.getElementById("cpuComp").innerHTML = t;                  
+                }, dot*dotSpeed); 
+            }
+
+
+-->
+  
+
+
+<!--
+  
+ 
+   
+
+
+
+
+             
+-->  
